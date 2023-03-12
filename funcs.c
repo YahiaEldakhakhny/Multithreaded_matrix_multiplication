@@ -27,6 +27,21 @@ void get_file_name(Matrix m, char file_name[]){
 	strcpy(file_name, fn);
 }
 
+// Function to convert 1D array to a 2D matrix
+// matrix size must be pre-allocated
+void array_to_matrix(int** matrix, int *arr, int row, int col){
+	// put each element in its place	
+    int i,j,k=0;     
+    for(i=0;i<row;i++)
+    {
+        for(j=0;j<col;j++)
+        {
+            matrix[i][j] = arr[k];
+            k++;
+        }
+    }
+}
+
 
 // Function to read data of a matrix from a txt file
 void read_matrix(Matrix m, int* r, int* c){
@@ -34,6 +49,13 @@ void read_matrix(Matrix m, int* r, int* c){
 	m.file_ptr = fopen(m.file_name, "r");
 	fscanf(m.file_ptr, "row=%d col=%d", r, c);
 
+	// get matrix elements
+	int arr_1d[*r * *c];
+	int i = 0, e;
+	while(fscanf(m.file_ptr, "%d", &e) != EOF){
+		arr_1d[i] = e;
+		i++;
+	}
 
 	fclose(m.file_ptr);
 }

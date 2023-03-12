@@ -31,3 +31,6 @@ void get_file_name(Matrix m, char file_name[]);
 
 // Function to read data of a matrix from a txt file
 void read_matrix(Matrix m, int* r, int* c);
+
+// Function to convert 1D array to a 2D matrix
+void array_to_matrix(int** matrix, int *arr, int row, int col);
