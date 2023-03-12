@@ -11,7 +11,7 @@ struct timeval stop_per_mat, start_per_mat;
 Matrix A, B, C_per_mat, C_per_row, C_per_elem;
 
 // Function executed by threads in per row method
-void multipy_row(void* R);
+void* multipy_row(void* R);
 
 int main(int argc,char* argv[]){
 	A.type = INPUT;
@@ -91,6 +91,8 @@ int main(int argc,char* argv[]){
     printf("Seconds taken (per matrix) %lu\n", stop_per_mat.tv_sec - start_per_mat.tv_sec);
     printf("Microseconds taken (per matrix): %lu\n", stop_per_mat.tv_usec - start_per_mat.tv_usec);
 
+	// print C_per_mat for reference
+	print_mat(C_per_mat);
 
 	/** Multiply A and B using A thread per row **/
 	// Allocate space in C_per_matrix
@@ -101,18 +103,33 @@ int main(int argc,char* argv[]){
 		C_per_row.mat[i] = malloc(sizeof(int) * C_per_row.cols);
 	}
 	// Number of threads = number of rows in C_per_row
-	// pthread_t threads_arr[C_per_row.rows];
-	// int nums[C_per_row.rows];
+	pthread_t threads_arr[C_per_row.rows];
+	int res;
+	// Number of rows must be stored in an array to allow each thread to read the correct number
+	int nums[C_per_row.rows];
+	// Run threads
+	for(int i = 0; i < C_per_row.rows; i++){
+		nums[i] = i;
+		res = pthread_create(&threads_arr[i], NULL, multipy_row, (void*) &nums[i]);
+		if(res){
+			printf("ERROR\n");
+			exit(0);
+		}
+	}
+	// Wait for threads to join
+	for(int j = 0; j < C_per_row.rows; j++){
+		pthread_join(threads_arr[j], NULL);
+	}
 
-
-	
+	// print C_per_row
+	print_mat(C_per_row);
 	return 0;
 }
 
 
 
 // Function executed by threads in per row method
-void multipy_row(void* R){
+void* multipy_row(void* R){
 	int trgt_row = *((int*) R);
 	int sum = 0;
 	for(int i = 0; i < C_per_row.rows; i++){
@@ -122,4 +139,5 @@ void multipy_row(void* R){
 		}
 		C_per_row.mat[trgt_row][i] = sum;
 	}
+	return NULL;
 }
