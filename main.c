@@ -4,6 +4,9 @@
 #include <pthread.h>
 #include "funcs.h"
 
+// Structs to measure time taken by each method
+struct timeval stop_per_mat, start_per_mat;
+
 // Create 3 matrices A, B, C
 Matrix A, B, C_per_mat;
 
@@ -40,9 +43,6 @@ int main(int argc,char* argv[]){
 
 	populate_matrix(A);
 
-	// Test process
-	print_mat(A);
-
 	/** Read data of matrix B **/
 	// get number of rows and columns
 	get_rc(B, &(B.rows), &(B.cols));
@@ -54,12 +54,32 @@ int main(int argc,char* argv[]){
 
 	populate_matrix(B);
 
-	// Test process
-	print_mat(B);
 
-	
-	
+	/** Multiply A and B using 1 thread **/
+	// Allocate space in C_per_matrix
+	C_per_mat.rows = A.rows;
+	C_per_mat.cols = B.cols;
+	C_per_mat.mat = malloc(sizeof(int*) * C_per_mat.rows);
+	for(int i = 0; i < C_per_mat.rows; i++){
+		C_per_mat.mat[i] = malloc(sizeof(int) * C_per_mat.cols);
+	}
 
+	// Multiply A and B
+    gettimeofday(&start_per_mat, NULL); //start checking time
+
+	for (int i = 0; i < C_per_mat.rows; i++) {
+		for (int j = 0; j < C_per_mat.cols; j++) {
+			C_per_mat.mat[i][j] = 0;
+			for (int k = 0; k < B.rows; k++) {
+				C_per_mat.mat[i][j] += A.mat[i][k] * B.mat[k][j];
+			}
+		}
+	}
+
+    gettimeofday(&stop_per_mat, NULL); //end checking time
+
+    printf("Seconds taken (per matrix) %lu\n", stop_per_mat.tv_sec - start_per_mat.tv_sec);
+    printf("Microseconds taken (per matrix): %lu\n", stop_per_mat.tv_usec - start_per_mat.tv_usec);
 
 
 
