@@ -37,3 +37,5 @@ void array_to_matrix(int** matrix, int *arr, int row, int col);
 void get_rc(Matrix m, int* r, int* c);
 
 void populate_matrix(Matrix m);
+
+void print_mat(Matrix m);

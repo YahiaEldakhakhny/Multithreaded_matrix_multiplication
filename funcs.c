@@ -66,7 +66,6 @@ void populate_matrix(Matrix m){
 		m.elem[i] = e;
 		i++;
 	}
-	printf("1D array done\n");
 	//Put elements in matrix
 	array_to_matrix(m.mat, m.elem, m.rows, m.cols);
 
@@ -74,3 +73,11 @@ void populate_matrix(Matrix m){
 }
 
 
+void print_mat(Matrix m){
+	for(int i = 0; i < m.rows; i++){
+		for(int j = 0; j < m.cols; j++){
+			printf("%d ", m.mat[i][j]);
+		}
+		printf("\n");
+	}
+}
