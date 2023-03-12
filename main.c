@@ -6,6 +6,7 @@
 
 // Structs to measure time taken by each method
 struct timeval stop_per_mat, start_per_mat;
+struct timeval stop_per_row, start_per_row;
 
 // Create matrices A, B, C for different casses
 Matrix A, B, C_per_mat, C_per_row, C_per_elem;
@@ -92,6 +93,7 @@ int main(int argc,char* argv[]){
     printf("Microseconds taken (per matrix): %lu\n", stop_per_mat.tv_usec - start_per_mat.tv_usec);
 
 	// print C_per_mat for reference
+	printf("****************************PER MATRIX\n");
 	print_mat(C_per_mat);
 
 	/** Multiply A and B using A thread per row **/
@@ -102,11 +104,15 @@ int main(int argc,char* argv[]){
 	for(int i = 0; i < C_per_row.rows; i++){
 		C_per_row.mat[i] = malloc(sizeof(int) * C_per_row.cols);
 	}
+
 	// Number of threads = number of rows in C_per_row
 	pthread_t threads_arr[C_per_row.rows];
 	int res;
 	// Number of rows must be stored in an array to allow each thread to read the correct number
 	int nums[C_per_row.rows];
+	//start checking time
+	gettimeofday(&start_per_row, NULL);
+
 	// Run threads
 	for(int i = 0; i < C_per_row.rows; i++){
 		nums[i] = i;
@@ -121,7 +127,14 @@ int main(int argc,char* argv[]){
 		pthread_join(threads_arr[j], NULL);
 	}
 
+	//end checking time
+    gettimeofday(&stop_per_row, NULL);
+	// Get time of execution
+    printf("Seconds taken (per row) %lu\n", stop_per_row.tv_sec - start_per_row.tv_sec);
+    printf("Microseconds taken (per row): %lu\n", stop_per_row.tv_usec - start_per_row.tv_usec);
+
 	// print C_per_row
+	printf("****************************PER ROW\n");
 	print_mat(C_per_row);
 	return 0;
 }
