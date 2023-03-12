@@ -7,30 +7,40 @@
 // Structs to measure time taken by each method
 struct timeval stop_per_mat, start_per_mat;
 
-// Create 3 matrices A, B, C
-Matrix A, B, C_per_mat;
+// Create matrices A, B, C for different casses
+Matrix A, B, C_per_mat, C_per_row, C_per_elem;
 
+// Function executed by threads in per row method
+void multipy_row(void* R);
 
 int main(int argc,char* argv[]){
 	A.type = INPUT;
 	B.type = INPUT;
 	C_per_mat.type = OUTPUT | PER_MATRIX;
+	C_per_row.type = OUTPUT | PER_ROW;
+	C_per_mat.type = OUTPUT | PER_ELEMENT;
 	
 	// Get file names from input arguments and set default file names
 	if(argc < 4){
 		strcpy(A.prefix, "a");
 		strcpy(B.prefix, "b");
 		strcpy(C_per_mat.prefix, "c");
+		strcpy(C_per_row.prefix, "c");
+		strcpy(C_per_elem.prefix, "c");
 	}
 	else{
 		strcpy(A.prefix, argv[1]);
 		strcpy(B.prefix, argv[2]);
 		strcpy(C_per_mat.prefix, argv[3]);
+		strcpy(C_per_row.prefix, argv[3]);
+		strcpy(C_per_elem.prefix, argv[3]);
 
 	}
 	get_file_name(A, A.file_name);
 	get_file_name(B, B.file_name);
 	get_file_name(C_per_mat, C_per_mat.file_name);
+	get_file_name(C_per_row, C_per_row.file_name);
+	get_file_name(C_per_elem, C_per_elem.file_name);
 
 	/** Read data of matrix A **/
 	// get number of rows and columns
@@ -82,6 +92,34 @@ int main(int argc,char* argv[]){
     printf("Microseconds taken (per matrix): %lu\n", stop_per_mat.tv_usec - start_per_mat.tv_usec);
 
 
+	/** Multiply A and B using A thread per row **/
+	// Allocate space in C_per_matrix
+	C_per_row.rows = A.rows;
+	C_per_row.cols = B.cols;
+	C_per_row.mat = malloc(sizeof(int*) * C_per_row.rows);
+	for(int i = 0; i < C_per_row.rows; i++){
+		C_per_row.mat[i] = malloc(sizeof(int) * C_per_row.cols);
+	}
+	// Number of threads = number of rows in C_per_row
+	// pthread_t threads_arr[C_per_row.rows];
+	// int nums[C_per_row.rows];
 
+
+	
 	return 0;
+}
+
+
+
+// Function executed by threads in per row method
+void multipy_row(void* R){
+	int trgt_row = *((int*) R);
+	int sum = 0;
+	for(int i = 0; i < C_per_row.rows; i++){
+		sum = 0;
+		for(int j = 0; j < A.cols; j++){
+			sum += A.mat[trgt_row][j] * B.mat[j][i];
+		}
+		C_per_row.mat[trgt_row][i] = sum;
+	}
 }
