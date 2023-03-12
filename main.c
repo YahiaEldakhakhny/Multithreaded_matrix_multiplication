@@ -96,8 +96,8 @@ int main(int argc,char* argv[]){
     printf("Seconds taken (per matrix) %lu\n", stop_per_mat.tv_sec - start_per_mat.tv_sec);
     printf("Microseconds taken (per matrix): %lu\n", stop_per_mat.tv_usec - start_per_mat.tv_usec);
 
-	// print C_per_mat for reference
-	print_mat(C_per_mat);
+	// write matrix to txt file
+	write_mat(C_per_mat);
 
 	/** Multiply A and B using A thread per row **/
 	// Allocate space in C_per_row
@@ -136,8 +136,8 @@ int main(int argc,char* argv[]){
     printf("Seconds taken (per row) %lu\n", stop_per_row.tv_sec - start_per_row.tv_sec);
     printf("Microseconds taken (per row): %lu\n", stop_per_row.tv_usec - start_per_row.tv_usec);
 
-	// print C_per_row
-	print_mat(C_per_row);
+	// write matrix to txt file
+	write_mat(C_per_row);
 
 
 
@@ -184,8 +184,8 @@ int main(int argc,char* argv[]){
     printf("Seconds taken (per element) %lu\n", stop_per_elem.tv_sec - start_per_elem.tv_sec);
     printf("Microseconds taken (per element): %lu\n", stop_per_elem.tv_usec - start_per_elem.tv_usec);
 
-	// print C_per_elem
-	print_mat(C_per_elem);
+	// write matrix to txt file
+	write_mat(C_per_elem);
 
 	return 0;
 }

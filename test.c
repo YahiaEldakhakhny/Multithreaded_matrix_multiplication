@@ -19,12 +19,11 @@ int main(){
 
 	populate_matrix(k);
 
-	for(int r = 0; r < k.rows; r++){
-		printf("row #%d", r);
-		for(int c = 0; c < k.cols; c++){
-			printf("%d ", k.mat[r][c]);
-		}
-		printf("\n");
-	}
+	Matrix y = k;
+	strcpy(y.prefix, "y");
+	y.type = OUTPUT | PER_ROW;
+	get_file_name(y, y.file_name);
+
+	write_mat(y);
 	return 0;
 }

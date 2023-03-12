@@ -72,7 +72,7 @@ void populate_matrix(Matrix m){
 	fclose(m.file_ptr);
 }
 
-
+// Function to print the elements of a matrix
 void print_mat(Matrix m){
 	for(int i = 0; i < m.rows; i++){
 		for(int j = 0; j < m.cols; j++){
@@ -80,4 +80,41 @@ void print_mat(Matrix m){
 		}
 		printf("\n");
 	}
+}
+
+
+// Function to write a matrix to a txt file
+void write_mat(Matrix y){
+	// get the name of the method
+	char method[LINE_SIZE];
+	if(IS_PER_MATRIX(y.type)){
+		strcpy(method, "A thread per matrix");
+	}
+	else if(IS_PER_ROW(y.type)){
+		strcpy(method, "A thread per row");		
+	}
+	else if(IS_PER_ELEMENT(y.type)){
+		strcpy(method, "A thread per element");	
+	}
+	else{
+		strcpy(method, "Unkown method");
+	}
+
+
+	
+	// open file in write mode
+	y.file_ptr = fopen(y.file_name, "w");
+	// write the method of the matrix
+	fprintf(y.file_ptr, "Method: %s\n", method);
+	// write the dimensions of the matrix
+	fprintf(y.file_ptr, "row=%d col=%d\n", y.rows, y.cols);
+	// write elements of the matrix
+	for(int i = 0; i < y.rows; i++){
+		for(int j = 0; j < y.cols; j++){
+			fprintf(y.file_ptr, "%d ", y.mat[i][j]);
+		}
+		fprintf(y.file_ptr, "\n");
+	}
+	fclose(y.file_ptr);
+	
 }

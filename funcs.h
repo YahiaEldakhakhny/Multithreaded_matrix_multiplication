@@ -5,6 +5,7 @@
 #include <sys/time.h>
 
 #define WORD_SIZE 32
+#define LINE_SIZE 256
 #define INPUT 0
 #define OUTPUT 0b0001
 #define PER_MATRIX 0b0010
@@ -39,4 +40,8 @@ void get_rc(Matrix m, int* r, int* c);
 
 void populate_matrix(Matrix m);
 
+// Function to print the elements of a matrix
 void print_mat(Matrix m);
+
+// Function to write a matrix to a txt file
+void write_mat(Matrix y);
