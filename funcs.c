@@ -43,23 +43,34 @@ void array_to_matrix(int** matrix, int *arr, int row, int col){
 }
 
 
-// Function to read data of a matrix from a txt file
-void read_matrix(Matrix m, int* r, int* c){
+// Function to get number of rows and columns from a txt file
+void get_rc(Matrix m, int* r, int* c){
 	// Get number of rows and cols
 	m.file_ptr = fopen(m.file_name, "r");
 	fscanf(m.file_ptr, "row=%d col=%d", r, c);
 
-	// get matrix elements
-	int arr_1d[*r * *c];
-	int i = 0, e;
-	while(fscanf(m.file_ptr, "%d", &e) != EOF){
-		arr_1d[i] = e;
-		i++;
-	}
-
 	fclose(m.file_ptr);
 }
 
+void populate_matrix(Matrix m){
+	// Open file to read values
+	m.file_ptr = fopen(m.file_name, "r");
+	// skip first line in file
+	int temp1, temp2;
+	fscanf(m.file_ptr, "row=%d col=%d", &temp1, &temp2);
 
+	// get matrix elements in 1d array
+	m.elem = malloc(sizeof(int) * m.rows * m.cols);
+	int i = 0, e;
+	while(fscanf(m.file_ptr, "%d", &e) != EOF){
+		m.elem[i] = e;
+		i++;
+	}
+	printf("1D array done\n");
+	//Put elements in matrix
+	array_to_matrix(m.mat, m.elem, m.rows, m.cols);
+
+	fclose(m.file_ptr);
+}
 
 

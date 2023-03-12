@@ -21,6 +21,7 @@ typedef struct{
 	char prefix[WORD_SIZE];
 	FILE* file_ptr;
 	int** mat;
+	int* elem;
 	int rows, cols;
 	int type; // type of a matrix indicate if its input or output, and if output then which method
 } Matrix;
@@ -29,8 +30,10 @@ typedef struct{
 // Function to generate the file name of a matrix
 void get_file_name(Matrix m, char file_name[]);
 
-// Function to read data of a matrix from a txt file
-void read_matrix(Matrix m, int* r, int* c);
-
 // Function to convert 1D array to a 2D matrix
 void array_to_matrix(int** matrix, int *arr, int row, int col);
+
+// Function to get number of rows and columns from a txt file
+void get_rc(Matrix m, int* r, int* c);
+
+void populate_matrix(Matrix m);
