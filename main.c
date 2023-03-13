@@ -202,7 +202,7 @@ int main(int argc,char* argv[]){
 void* multipy_row(void* R){
 	int trgt_row = *((int*) R);
 	int sum = 0;
-	for(int i = 0; i < C_per_row.rows; i++){
+	for(int i = 0; i < C_per_row.cols; i++){
 		sum = 0;
 		for(int j = 0; j < A.cols; j++){
 			sum += A.mat[trgt_row][j] * B.mat[j][i];

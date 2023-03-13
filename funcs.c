@@ -111,7 +111,7 @@ void write_mat(Matrix y){
 	// write elements of the matrix
 	for(int i = 0; i < y.rows; i++){
 		for(int j = 0; j < y.cols; j++){
-			fprintf(y.file_ptr, "%d ", y.mat[i][j]);
+			fprintf(y.file_ptr, "%d\t", y.mat[i][j]);
 		}
 		fprintf(y.file_ptr, "\n");
 	}
