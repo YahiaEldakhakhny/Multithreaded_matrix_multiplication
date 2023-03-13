@@ -7,15 +7,15 @@
 #define WORD_SIZE 32
 #define LINE_SIZE 256
 #define INPUT 0
-#define OUTPUT 0b0001
-#define PER_MATRIX 0b0010
-#define PER_ROW 0b0100
-#define PER_ELEMENT 0b1000
+#define OUTPUT 1
+#define PER_MATRIX 3
+#define PER_ROW 5
+#define PER_ELEMENT 9
 
 #define IS_OUTPUT(TYPE) TYPE & OUTPUT
-#define IS_PER_MATRIX(TYPE) TYPE & PER_MATRIX
-#define IS_PER_ROW(TYPE) TYPE & PER_ROW
-#define IS_PER_ELEMENT(TYPE) TYPE & PER_ELEMENT
+#define IS_PER_MATRIX(TYPE) TYPE == PER_MATRIX
+#define IS_PER_ROW(TYPE) TYPE == PER_ROW
+#define IS_PER_ELEMENT(TYPE) TYPE == PER_ELEMENT
 
 // struct to store all data related to a matrix
 typedef struct{

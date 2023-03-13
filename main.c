@@ -21,10 +21,10 @@ void* multipy_elem(void* P);
 int main(int argc,char* argv[]){
 	A.type = INPUT;
 	B.type = INPUT;
-	C_per_mat.type = OUTPUT | PER_MATRIX;
-	C_per_row.type = OUTPUT | PER_ROW;
-	C_per_mat.type = OUTPUT | PER_ELEMENT;
-	
+	C_per_mat.type = PER_MATRIX;
+	C_per_row.type = PER_ROW;
+	C_per_elem.type = PER_ELEMENT;
+
 	// Get file names from input arguments and set default file names
 	if(argc < 4){
 		strcpy(A.prefix, "a");
