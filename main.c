@@ -1,3 +1,9 @@
+/*
+This code is the work of
+Yahia Walid Mohamad Eldakhakhny		19016891
+Detailed project description is at:
+https://github.com/SajedHassan/Operating-Systems/tree/master/Labs/lab2
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
