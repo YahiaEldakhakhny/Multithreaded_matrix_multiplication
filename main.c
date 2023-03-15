@@ -213,6 +213,38 @@ int main(int argc,char* argv[]){
 	// write matrix to txt file
 	write_mat(C_per_elem);
 
+	/* Free allocated space */
+	// Matrix A
+	for(int i = 0; i < A.rows; i++){
+		free(A.mat[i]);
+	}
+	free(A.mat);
+
+	// Matrix B
+	for(int i = 0; i < B.rows; i++){
+		free(B.mat[i]);
+	}
+	free(B.mat);
+
+	// Matrix C_per_mat
+	for(int i = 0; i < C_per_mat.rows; i++){
+		free(C_per_mat.mat[i]);
+	}
+	free(C_per_mat.mat);
+
+	// Matrix C_per_row
+	for(int i = 0; i < C_per_row.rows; i++){
+		free(C_per_row.mat[i]);
+	}
+	free(C_per_row.mat);
+
+	// Matrix C_per_elem
+	for(int i = 0; i < C_per_elem.rows; i++){
+		free(C_per_elem.mat[i]);
+	}
+	free(C_per_elem.mat);
+	
+	
 	return 0;
 }
 /**************** END OF MAIN ****************/
