@@ -31,7 +31,11 @@ int main(int argc,char* argv[]){
 	C_per_row.type = PER_ROW;
 	C_per_elem.type = PER_ELEMENT;
 
-	// Get file names from input arguments and set default file names
+	/*
+	If the user provides 3 arguments for the names I will use these arguments
+	If the user does not provide any arguments or provides an incomplete set of arguments
+	then I will use the defaults
+	*/
 	if(argc < 4){
 		strcpy(A.prefix, "a");
 		strcpy(B.prefix, "b");
@@ -47,6 +51,7 @@ int main(int argc,char* argv[]){
 		strcpy(C_per_elem.prefix, argv[3]);
 
 	}
+	// Get file names of the matrices according to the provided command line arguments or default values
 	get_file_name(A, A.file_name);
 	get_file_name(B, B.file_name);
 	get_file_name(C_per_mat, C_per_mat.file_name);
@@ -75,7 +80,12 @@ int main(int argc,char* argv[]){
 
 	populate_matrix(B);
 
-
+	// If user provides incompatibel matrix size
+	if(A.cols != B.rows){
+		printf("Incompatible Matrix sizes\n");
+		exit(-1);
+	}
+	
 	/** Multiply A and B using 1 thread **/
 	// Allocate space in C_per_matrix
 	C_per_mat.rows = A.rows;
@@ -130,12 +140,15 @@ int main(int argc,char* argv[]){
 		res = pthread_create(&threads_arr_row[i], NULL, multipy_row, (void*) &nums[i]);
 		if(res){
 			printf("ERROR\n");
-			exit(0);
+			exit(-1);
 		}
 	}
 	// Wait for threads to join
 	for(int j = 0; j < C_per_row.rows; j++){
-		pthread_join(threads_arr_row[j], NULL);
+		if(pthread_join(threads_arr_row[j], NULL)){
+			printf("Error joining threads\n");
+			exit(-1);
+		}
 	}
 
 	//end checking time
@@ -183,7 +196,10 @@ int main(int argc,char* argv[]){
 	// Wait for threads to join
 	for(int k = 0; k < C_per_elem.rows; k++){
 		for(int l = 0; l < C_per_elem.cols; l++){
-			pthread_join(threads_arr_elem[k][l], NULL);		
+			if(pthread_join(threads_arr_elem[k][l], NULL)){
+				printf("Error joining threads\n");
+				exit(-1);
+			}		
 		}
 	}
 	

@@ -47,6 +47,11 @@ void array_to_matrix(int** matrix, int *arr, int row, int col){
 void get_rc(Matrix m, int* r, int* c){
 	// Get number of rows and cols
 	m.file_ptr = fopen(m.file_name, "r");
+	// If fopen fails to open the specified file
+	if(m.file_ptr == NULL){
+		printf("Failed to open %s\n", m.file_name);
+		exit(-1);
+	}
 	fscanf(m.file_ptr, "row=%d col=%d", r, c);
 
 	fclose(m.file_ptr);
@@ -65,6 +70,13 @@ void populate_matrix(Matrix m){
 	while(fscanf(m.file_ptr, "%d", &e) != EOF){
 		m.elem[i] = e;
 		i++;
+	}
+	/* If number of elememts does not match the
+	expected size
+	*/
+	if(i != (m.rows * m.cols)){
+		printf("Incorrect Matrix size provided\n");
+		exit(-1);
 	}
 	//Put elements in matrix
 	array_to_matrix(m.mat, m.elem, m.rows, m.cols);
