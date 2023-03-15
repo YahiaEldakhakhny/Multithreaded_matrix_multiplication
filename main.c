@@ -19,10 +19,10 @@ struct timeval stop_per_elem, start_per_elem;
 Matrix A, B, C_per_mat, C_per_row, C_per_elem;
 
 // Function executed by threads in per row method
-void* multipy_row(void* R);
+void* multiply_row(void* R);
 
 // Function executed by threads in per element method
-void* multipy_elem(void* P);
+void* multiply_elem(void* P);
 
 int main(int argc,char* argv[]){
 	A.type = INPUT;
@@ -137,7 +137,7 @@ int main(int argc,char* argv[]){
 	// Run threads
 	for(int i = 0; i < C_per_row.rows; i++){
 		nums[i] = i;
-		res = pthread_create(&threads_arr_row[i], NULL, multipy_row, (void*) &nums[i]);
+		res = pthread_create(&threads_arr_row[i], NULL, multiply_row, (void*) &nums[i]);
 		if(res){
 			printf("ERROR\n");
 			exit(-1);
@@ -185,7 +185,7 @@ int main(int argc,char* argv[]){
 		for(int j = 0; j < C_per_elem.cols; j++){
 			positions[i][j][0] = i;
 			positions[i][j][1] = j;
-			res = pthread_create(&threads_arr_elem[i][j], NULL, multipy_elem, (void*) positions[i][j]);
+			res = pthread_create(&threads_arr_elem[i][j], NULL, multiply_elem, (void*) positions[i][j]);
 			if(res){
 				printf("ERROR\n");
 				exit(0);
@@ -251,7 +251,7 @@ int main(int argc,char* argv[]){
 
 
 // Function executed by threads in per row method
-void* multipy_row(void* R){
+void* multiply_row(void* R){
 	int trgt_row = *((int*) R);
 	int sum = 0;
 	for(int i = 0; i < C_per_row.cols; i++){
@@ -266,7 +266,7 @@ void* multipy_row(void* R){
 
 
 // Function executed by threads in per row method
-void* multipy_elem(void* P){
+void* multiply_elem(void* P){
 	int* pos = (int*) P;
 	int r = pos[0], c = pos[1];
 	int sum = 0;
