@@ -7,10 +7,10 @@
 #define WORD_SIZE 32
 #define LINE_SIZE 256
 #define INPUT 0
-#define OUTPUT 1
-#define PER_MATRIX 3
-#define PER_ROW 5
-#define PER_ELEMENT 9
+#define OUTPUT 1 		// 0001
+#define PER_MATRIX 3 	// 0011
+#define PER_ROW 5 		// 0101
+#define PER_ELEMENT 9	// 1001
 
 #define IS_OUTPUT(TYPE) TYPE & OUTPUT
 #define IS_PER_MATRIX(TYPE) TYPE == PER_MATRIX

@@ -82,6 +82,7 @@ void populate_matrix(Matrix m){
 	array_to_matrix(m.mat, m.elem, m.rows, m.cols);
 
 	fclose(m.file_ptr);
+	free(m.elem);
 }
 
 // Function to print the elements of a matrix
