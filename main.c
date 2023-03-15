@@ -99,9 +99,11 @@ int main(int argc,char* argv[]){
 
     gettimeofday(&stop_per_mat, NULL); //end checking time
 
-    printf("Seconds taken (per matrix) %lu\n", stop_per_mat.tv_sec - start_per_mat.tv_sec);
-    printf("Microseconds taken (per matrix): %lu\n", stop_per_mat.tv_usec - start_per_mat.tv_usec);
-
+	printf("A thread per matrix:\n");
+    printf("Seconds taken: %lu\n", stop_per_mat.tv_sec - start_per_mat.tv_sec);
+    printf("Microseconds taken: %lu\n", stop_per_mat.tv_usec - start_per_mat.tv_usec);
+	printf("1 Thread needed\n");
+	
 	// write matrix to txt file
 	write_mat(C_per_mat);
 
@@ -139,9 +141,10 @@ int main(int argc,char* argv[]){
 	//end checking time
     gettimeofday(&stop_per_row, NULL);
 	// Get time of execution
+	printf("A thread per row:\n");
     printf("Seconds taken (per row) %lu\n", stop_per_row.tv_sec - start_per_row.tv_sec);
     printf("Microseconds taken (per row): %lu\n", stop_per_row.tv_usec - start_per_row.tv_usec);
-
+	printf("%d Threads created\n", C_per_row.rows);	
 	// write matrix to txt file
 	write_mat(C_per_row);
 
@@ -187,9 +190,10 @@ int main(int argc,char* argv[]){
 	//end checking time
     gettimeofday(&stop_per_elem, NULL);
 	// Get time of execution
+	printf("A Thread per Element:\n");
     printf("Seconds taken (per element) %lu\n", stop_per_elem.tv_sec - start_per_elem.tv_sec);
     printf("Microseconds taken (per element): %lu\n", stop_per_elem.tv_usec - start_per_elem.tv_usec);
-
+	printf("%d Threads created\n", C_per_elem.cols * C_per_elem.rows);
 	// write matrix to txt file
 	write_mat(C_per_elem);
 
